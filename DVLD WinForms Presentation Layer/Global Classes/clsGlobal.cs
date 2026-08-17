@@ -1,4 +1,5 @@
 ﻿using DVLD_Business_Layer;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,26 +17,22 @@ namespace DVLD.Classes
 
         public static bool RememberUserNameAndPassword( string Username,  string Password)
         {
+
+            string KeyPath = @"HKEY_CURRENT_USER\Software\DVLDLoginData";
+
+            string UsernameValueName = "Username";
+            string ValueUsername = Username;
+
+            string PasswordValueName = "Password";
+            string ValuePassword = Password;
+
             try
             {
 
-                string currentDirectory = System.IO.Directory.GetCurrentDirectory();
+                Registry.SetValue(KeyPath, UsernameValueName, ValueUsername, RegistryValueKind.String);
 
-                string FilePath = currentDirectory + "\\data.txt";
-
-                if (Username == "" && File.Exists(FilePath))
-                {
-                    File.Delete(FilePath);
-                    return false;
-                }
-
-                string DataToSaved = Username + "#//#" + Password;
-
-                using (StreamWriter writer = new StreamWriter(FilePath))
-                {
-                    writer.WriteLine(DataToSaved);
-                    return true;
-                }
+                Registry.SetValue(KeyPath, PasswordValueName, ValuePassword, RegistryValueKind.String);
+              
             }
             
             catch(Exception ex)
@@ -43,40 +40,30 @@ namespace DVLD.Classes
                 MessageBox.Show($"An error occurred: {ex.Message}");
                 return false;
             }
+
+            return true;
         }
 
         public static bool GetStoredCredential(ref string Username, ref string Password)
         {
 
+            string KeyPath = @"HKEY_CURRENT_USER\Software\DVLDLoginData";
+
+            string UsernameValueName = "Username";
+            string PasswordValueName = "Password";
+
             try
             {
 
-                string currentDirectory = System.IO.Directory.GetCurrentDirectory();
 
-                string FilePath = currentDirectory + "\\data.txt";
+                string UsernameValue = Registry.GetValue(KeyPath,UsernameValueName,null) as string;
+                string PasswordValue = Registry.GetValue(KeyPath,PasswordValueName,null) as string;
 
-
-
-                if (File.Exists(FilePath))
+                if (UsernameValue != null && PasswordValue != null)
                 {
-
-                    using (StreamReader reader = new StreamReader(FilePath))
-                    {
-
-                        string Line;
-                        while((Line = reader.ReadLine()) != null)
-                        {
-                      
-                            string[] result = Line.Split(new string[] { "#//#" }, StringSplitOptions.None);
-
-                            Username = result[0];
-                            Password = result[1];
-
-                        }
-                            return true;
-
-                    }
-
+                    Username = UsernameValue;
+                    Password = PasswordValue;
+                    return true;
                 }
                 else
                 {
@@ -90,6 +77,8 @@ namespace DVLD.Classes
                 MessageBox.Show($"An error occurred: {ex.Message}");
                 return false;
             }
+
+      
         }
         
 

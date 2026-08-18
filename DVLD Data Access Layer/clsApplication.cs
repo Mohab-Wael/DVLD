@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace DVLD_Data_Access_Layer
 {
@@ -55,6 +56,16 @@ namespace DVLD_Data_Access_Layer
             }
             catch (Exception ex)
             {
+
+                string SourceName = "DVLDApp";
+
+                if (!EventLog.SourceExists(SourceName))
+                {
+                    EventLog.CreateEventSource(SourceName, "Application");
+                }
+
+                EventLog.WriteEntry(SourceName, ex.Message, EventLogEntryType.Error);
+
                 IsFound = false;   
             }
             finally
@@ -107,7 +118,14 @@ namespace DVLD_Data_Access_Layer
             }
             catch (Exception ex)
             {
+                string SourceName = "DVLDApp";
 
+                if (!EventLog.SourceExists(SourceName))
+                {
+                    EventLog.CreateEventSource(SourceName, "Application");
+                }
+
+                EventLog.WriteEntry(SourceName, ex.Message, EventLogEntryType.Error);
             }
             finally
             {
@@ -157,7 +175,14 @@ namespace DVLD_Data_Access_Layer
             }
             catch (Exception ex) 
             {
-                
+                string SourceName = "DVLDApp";
+
+                if (!EventLog.SourceExists(SourceName))
+                {
+                    EventLog.CreateEventSource(SourceName, "Application");
+                }
+
+                EventLog.WriteEntry(SourceName, ex.Message, EventLogEntryType.Error);
             }
             finally
             {
@@ -194,7 +219,14 @@ namespace DVLD_Data_Access_Layer
             }
             catch (Exception ex)
             {
+                string SourceName = "DVLDApp";
 
+                if (!EventLog.SourceExists(SourceName))
+                {
+                    EventLog.CreateEventSource(SourceName, "Application");
+                }
+
+                EventLog.WriteEntry(SourceName, ex.Message, EventLogEntryType.Error);
             }
             finally
             {
@@ -231,7 +263,14 @@ namespace DVLD_Data_Access_Layer
             }
             catch (Exception ex)
             {
+                string SourceName = "DVLDApp";
 
+                if (!EventLog.SourceExists(SourceName))
+                {
+                    EventLog.CreateEventSource(SourceName, "Application");
+                }
+
+                EventLog.WriteEntry(SourceName, ex.Message, EventLogEntryType.Error);
             }
             finally
             {
@@ -273,9 +312,16 @@ namespace DVLD_Data_Access_Layer
 
 
             }
-            catch
+            catch(Exception ex)
             {
+                string SourceName = "DVLDApp";
 
+                if (!EventLog.SourceExists(SourceName))
+                {
+                    EventLog.CreateEventSource(SourceName, "Application");
+                }
+
+                EventLog.WriteEntry(SourceName, ex.Message, EventLogEntryType.Error);
             }
             finally
             {
@@ -327,7 +373,14 @@ namespace DVLD_Data_Access_Layer
             }
             catch (Exception ex)
             {
+                string SourceName = "DVLDApp";
 
+                if (!EventLog.SourceExists(SourceName))
+                {
+                    EventLog.CreateEventSource(SourceName, "Application");
+                }
+
+                EventLog.WriteEntry(SourceName, ex.Message, EventLogEntryType.Error);
             }
             finally
             {
@@ -364,7 +417,14 @@ namespace DVLD_Data_Access_Layer
             }
             catch(Exception ex)
             {
+                string SourceName = "DVLDApp";
 
+                if (!EventLog.SourceExists(SourceName))
+                {
+                    EventLog.CreateEventSource(SourceName, "Application");
+                }
+
+                EventLog.WriteEntry(SourceName, ex.Message, EventLogEntryType.Error);
             }
             finally
             {

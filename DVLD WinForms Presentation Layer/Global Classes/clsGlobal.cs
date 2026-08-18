@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,15 @@ namespace DVLD.Classes
             
             catch(Exception ex)
             {
+                string SourceName = "DVLDApp";
+
+                if (!EventLog.SourceExists(SourceName))
+                {
+                    EventLog.CreateEventSource(SourceName, "Application");
+                }
+
+                EventLog.WriteEntry(SourceName, ex.Message, EventLogEntryType.Error);
+
                 MessageBox.Show($"An error occurred: {ex.Message}");
                 return false;
             }
@@ -74,6 +84,15 @@ namespace DVLD.Classes
             }
             catch (Exception ex)
             {
+                string SourceName = "DVLDApp";
+
+                if (!EventLog.SourceExists(SourceName))
+                {
+                    EventLog.CreateEventSource(SourceName, "Application");
+                }
+
+                EventLog.WriteEntry(SourceName, ex.Message, EventLogEntryType.Error);
+
                 MessageBox.Show($"An error occurred: {ex.Message}");
                 return false;
             }
@@ -111,6 +130,15 @@ namespace DVLD.Classes
            } 
            catch (Exception ex)
            {
+                string SourceName = "DVLDApp";
+
+                if (!EventLog.SourceExists(SourceName))
+                {
+                    EventLog.CreateEventSource(SourceName, "Application");
+                }
+
+                EventLog.WriteEntry(SourceName, ex.Message, EventLogEntryType.Error);
+
                 MessageBox.Show($"An occurred error {ex.Message}");
                 return false;
            }

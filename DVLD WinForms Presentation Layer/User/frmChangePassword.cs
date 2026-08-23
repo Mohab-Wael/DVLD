@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlTypes;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -32,6 +33,15 @@ namespace DVLD.User
             txtConfirmPassword.Text = "";
         }
 
+        private string ComputeHash(string Password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashbytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(Password));
+
+                return BitConverter.ToString(hashbytes).Replace("-", "").ToLower();
+            }
+        }
 
         private void frmChangePassword_Load(object sender, EventArgs e)
         {
@@ -66,7 +76,7 @@ namespace DVLD.User
             }
 
 
-            if (txtCurrentPassword.Text.Trim() != _User.Password.Trim())
+            if (ComputeHash(txtCurrentPassword.Text.Trim()) != _User.Password.Trim())
             {
                 e.Cancel= true;
                 errorProvider1.SetError(txtCurrentPassword, "Current Password is wrong!");
@@ -97,7 +107,7 @@ namespace DVLD.User
 
             }
 
-            if(txtNewPassword.Text.Trim() == _User.Password.Trim())
+            if(ComputeHash( txtNewPassword.Text.Trim()) ==  _User.Password.Trim())
             {
                 e.Cancel = true;
                 errorProvider1.SetError(txtNewPassword, "New Password cannot be Current Password!");

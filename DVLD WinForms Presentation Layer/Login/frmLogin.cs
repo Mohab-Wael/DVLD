@@ -9,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -57,7 +58,16 @@ namespace DVLD.Login
                 return;
             }
 
-            clsUser User = clsUser.FindUsernameAndPassword(txtUserName.Text.Trim(), txtPassword.Text.Trim());
+            string HashedPassword = null;
+
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashbytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(txtPassword.Text));
+
+                 HashedPassword = BitConverter.ToString(hashbytes).Replace("-", "").ToLower();
+            }
+
+            clsUser User = clsUser.FindUsernameAndPassword(txtUserName.Text.Trim(), HashedPassword);
 
             if(User!=null)
             {

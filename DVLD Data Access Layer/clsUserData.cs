@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -193,6 +194,14 @@ namespace DVLD_Data_Access_Layer
                                VALUES (@PersonID, @UserName, @Password, @IsActive);
                             SELECT SCOPE_IDENTITY();";
 
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(Password));
+
+                Password = BitConverter.ToString(hashPassword).Replace("-", "").ToLower();
+            }
+
+
             SqlCommand command = new SqlCommand(Query, connection);
 
             command.Parameters.AddWithValue("@PersonID", PersonID);
@@ -282,6 +291,12 @@ namespace DVLD_Data_Access_Layer
                                    IsActive = @IsActive
                              WHERE UserID = @UserID;";
 
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(Password));
+
+                Password = BitConverter.ToString(hashPassword).Replace("-", "").ToLower();
+            }
 
             SqlCommand command  = new SqlCommand(Query,connection);
             command.Parameters.AddWithValue("@PersonID", PersonID);
